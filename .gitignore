@@ -1,0 +1,15 @@
+Makefile
+config.h
+config.log
+config.status
+data/Makefile
+data/pcmanfm.1
+data/ui/Makefile
+data/ui/about.glade
+po/Makefile
+po/Makefile.in
+po/POTFILES
+po/stamp-it
+src/.deps/
+src/Makefile
+stamp-h1
