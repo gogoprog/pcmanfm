@@ -27,6 +27,8 @@ pcmanfm_SOURCES = \
 	gseal-gtk-compat.h \
 	single-inst.c \
 	single-inst.h \
+	pipecontroller.c \
+	pipecontroller.h \
 	$(NULL)
 
 EXTRA_DIST= \
