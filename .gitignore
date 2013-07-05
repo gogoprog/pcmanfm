@@ -13,3 +13,11 @@ po/stamp-it
 src/.deps/
 src/Makefile
 stamp-h1
+po/*.gmo
+src/pcmanfm
+src/xml-purge
+pcmanfm.vpj
+pcmanfm.vpw
+pcmanfm.vpwhistu
+pcmanfm.vtg
+src/*.o
