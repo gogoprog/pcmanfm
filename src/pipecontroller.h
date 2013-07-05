@@ -1,5 +1,5 @@
 /*
- *      pcmanfm.h
+ *      pipecontroller.h
  *
  *      Copyright 2013 gogoprog @ gmail . com
  *
@@ -23,10 +23,11 @@
 
 struct PipeContext
 {
+    GString *file_name;
     FmMainWin *win;
 };
 
-void pc_open(const char *file_name);
+struct PipeContext *pc_open(const char *file_name, FmMainWin *win);
 void pc_close(struct PipeContext *ctx);
 void pc_on_data(struct PipeContext *ctx, const char *data);
 

@@ -59,6 +59,9 @@ struct _FmMainWin
     GtkMenuShell* bookmarks_menu;
     GtkWidget* history_menu;
     GtkMenu* popup;
+
+    struct PipeContext * pipe_context;
+
     /* <private> */
     FmNavHistory* nav_history;
     guint statusbar_ctx;

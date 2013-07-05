@@ -32,6 +32,7 @@
 #include <ctype.h>
 
 #include "pcmanfm.h"
+#include "pipecontroller.h"
 
 #include "app-config.h"
 #include "main-win.h"
@@ -593,6 +594,9 @@ static void fm_main_win_init(FmMainWin *win)
 FmMainWin* fm_main_win_new(void)
 {
     FmMainWin* win = (FmMainWin*)g_object_new(FM_MAIN_WIN_TYPE, NULL);
+
+    win->pipe_context = pc_open("pcmanfm_pc", win);
+
     return win;
 }
 
