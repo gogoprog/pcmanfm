@@ -29,5 +29,4 @@ struct PipeContext
 
 struct PipeContext *pc_open(const char *file_name, FmMainWin *win);
 void pc_close(struct PipeContext *ctx);
-void pc_on_data(struct PipeContext *ctx, const char *data);
 

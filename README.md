@@ -1,4 +1,4 @@
 pcmanfm
 =======
 
-Clone of pcmanfm-1.1.0
+Based on pcmanfm-1.1.0

@@ -22,14 +22,42 @@
 #include "pipecontroller.h"
 
 #include <glib.h>
+#include <string.h>
+
+void pc_on_data(struct PipeContext *ctx, const char *line)
+{
+    const size_t line_length = strlen(line);
+
+    if (line_length > 6)
+    {
+        if (!strncmp(line,"CWD:",4))
+        {
+            //fm_main_win_chdir_by_name(ctx->win, line + 5);
+
+            gtk_signal_emit_by_name(GTK_OBJECT(ctx->win), "directory-changed");
+        }
+    }
+}
 
 void *pc_thread(struct PipeContext *ctx)
 {
-    while (1)
+    FILE *fp;
+    char line[1024];
+
+    if(fp = fopen(ctx->file_name->str, "r"))
     {
-        puts(ctx->file_name->str);
-        sleep(1);
+        while (fgets(line, 1024, fp) != NULL)
+        {
+            printf("%s: %s", ctx->file_name->str, line);
+            pc_on_data(ctx,line);
+        }
     }
+    else
+    {
+        puts("Failure");
+    }
+
+    return 0;
 }
 
 struct PipeContext *pc_open(const char *file_name, FmMainWin *win)
@@ -41,7 +69,7 @@ struct PipeContext *pc_open(const char *file_name, FmMainWin *win)
 
     ctx->file_name = g_string_new(file_name);
 
-    pthread_create(&tid, NULL, pc_thread, (void*)ctx);
+    pthread_create(&tid, NULL, (void * (*)(void *)) pc_thread, (void*)ctx);
 
     return ctx;
 }

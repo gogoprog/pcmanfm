@@ -108,6 +108,8 @@ static void on_notebook_page_removed(GtkNotebook* nb, GtkWidget* page, guint num
 
 static void on_folder_view_clicked(FmFolderView* fv, FmFolderViewClickType type, FmFileInfo* fi, FmMainWin* win);
 
+static void on_directory_changed(GtkWidget* nb, GtkWidget* page, guint num, void* win);
+
 #include "main-win-ui.c" /* ui xml definitions and actions */
 
 static GSList* all_wins = NULL;
@@ -587,6 +589,17 @@ static void fm_main_win_init(FmMainWin *win)
     g_object_unref(act_grp);
     win->ui = ui;
 
+
+    g_signal_new(
+        "directory-changed",
+        G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST,
+        0, NULL, NULL,
+        g_cclosure_marshal_VOID__POINTER,
+        G_TYPE_NONE, 1, G_TYPE_POINTER
+        );
+
+    g_signal_connect(G_OBJECT(GTK_WINDOW(win)), "directory-changed", G_CALLBACK(on_directory_changed), NULL);
+
     gtk_container_add(GTK_CONTAINER(win), GTK_WIDGET(vbox));
 }
 
@@ -595,7 +608,7 @@ FmMainWin* fm_main_win_new(void)
 {
     FmMainWin* win = (FmMainWin*)g_object_new(FM_MAIN_WIN_TYPE, NULL);
 
-    win->pipe_context = pc_open("pcmanfm_pc", win);
+    win->pipe_context = pc_open("/tmp/pcmanfm-pc", win);
 
     return win;
 }
@@ -1502,4 +1515,9 @@ static void on_show_side_pane(GtkToggleAction* act, FmMainWin* win)
         app_config->side_pane_mode |= FM_SP_HIDE;
         gtk_widget_hide(GTK_WIDGET(win->side_pane));
     }
+}
+
+static void on_directory_changed(GtkWidget* nb, GtkWidget* page, guint num, void* data)
+{
+    puts("ouioui");
 }
