@@ -32,8 +32,6 @@ void pc_on_data(struct PipeContext *ctx, const char *line)
     {
         if (!strncmp(line,"CWD:",4))
         {
-            //fm_main_win_chdir_by_name(ctx->win, line + 5);
-
             gtk_signal_emit_by_name(GTK_OBJECT(ctx->win), "directory-changed");
         }
     }
@@ -57,6 +55,8 @@ void *pc_thread(struct PipeContext *ctx)
         puts("Failure");
     }
 
+    puts("End of pipe");
+
     return 0;
 }
 
@@ -68,6 +68,7 @@ struct PipeContext *pc_open(const char *file_name, FmMainWin *win)
     ctx = (struct PipeContext*)g_malloc(sizeof(struct PipeContext));
 
     ctx->file_name = g_string_new(file_name);
+    ctx->win = win;
 
     pthread_create(&tid, NULL, (void * (*)(void *)) pc_thread, (void*)ctx);
 
