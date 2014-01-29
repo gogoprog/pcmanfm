@@ -32,8 +32,9 @@ void pc_on_data(struct PipeContext *ctx, const char *line)
     {
         if (!strncmp(line,"CWD:",4))
         {
-            char *dir = (char*)malloc(1024);
+            char dir[1024];
             strcpy(dir, line + 4);
+            dir[line_length - 5] = 0;
             g_signal_emit_by_name(GTK_OBJECT(ctx->win), "directory-changed", dir);
         }
     }
@@ -50,7 +51,6 @@ void *pc_thread(struct PipeContext *ctx)
         {
             while (fgets(line, 1024, fp) != NULL)
             {
-                printf("%s: %s", ctx->file_name->str, line);
                 pc_on_data(ctx,line);
             }
         }
