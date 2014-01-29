@@ -32,7 +32,9 @@ void pc_on_data(struct PipeContext *ctx, const char *line)
     {
         if (!strncmp(line,"CWD:",4))
         {
-            gtk_signal_emit_by_name(GTK_OBJECT(ctx->win), "directory-changed");
+            char *dir = (char*)malloc(1024);
+            strcpy(dir, line + 4);
+            g_signal_emit_by_name(GTK_OBJECT(ctx->win), "directory-changed", dir);
         }
     }
 }
@@ -42,17 +44,16 @@ void *pc_thread(struct PipeContext *ctx)
     FILE *fp;
     char line[1024];
 
-    if(fp = fopen(ctx->file_name->str, "r"))
+    while (1)
     {
-        while (fgets(line, 1024, fp) != NULL)
+        if (fp = fopen(ctx->file_name->str, "r")) 
         {
-            printf("%s: %s", ctx->file_name->str, line);
-            pc_on_data(ctx,line);
+            while (fgets(line, 1024, fp) != NULL)
+            {
+                printf("%s: %s", ctx->file_name->str, line);
+                pc_on_data(ctx,line);
+            }
         }
-    }
-    else
-    {
-        puts("Failure");
     }
 
     puts("End of pipe");

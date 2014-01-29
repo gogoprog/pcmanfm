@@ -108,7 +108,7 @@ static void on_notebook_page_removed(GtkNotebook* nb, GtkWidget* page, guint num
 
 static void on_folder_view_clicked(FmFolderView* fv, FmFolderViewClickType type, FmFileInfo* fi, FmMainWin* win);
 
-static void on_directory_changed(GtkWidget* nb, GtkWidget* page);
+static void on_directory_changed(const char *dir);
 
 #include "main-win-ui.c" /* ui xml definitions and actions */
 
@@ -590,14 +590,16 @@ static void fm_main_win_init(FmMainWin *win)
     win->ui = ui;
 
     g_signal_new(
-       "directory-changed",
-        G_TYPE_OBJECT,
-        G_SIGNAL_RUN_FIRST,
-        0,
-        NULL, NULL,
-        g_cclosure_marshal_VOID__VOID,
-        G_TYPE_NONE, 0
-        );
+        "directory-changed",
+         G_TYPE_OBJECT,
+         G_SIGNAL_RUN_FIRST,
+         0,
+         NULL, NULL,
+         g_cclosure_marshal_VOID__STRING,
+         G_TYPE_NONE,
+         1,
+         G_TYPE_STRING
+         );
 
     g_signal_connect(G_OBJECT(GTK_WINDOW(win)), "directory-changed", G_CALLBACK(on_directory_changed), NULL);
 
@@ -1518,7 +1520,8 @@ static void on_show_side_pane(GtkToggleAction* act, FmMainWin* win)
     }
 }
 
-static void on_directory_changed(GtkWidget* nb, GtkWidget* page)
+static void on_directory_changed(const char *dir)
 {
     puts("Signal ok");
+    puts(dir);
 }
